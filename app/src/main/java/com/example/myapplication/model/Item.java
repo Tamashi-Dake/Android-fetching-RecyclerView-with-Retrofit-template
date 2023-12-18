@@ -1,18 +1,22 @@
-package com.example.myapplication;
+package com.example.myapplication.model;
 
 import java.io.Serializable;
 
 public class Item implements Serializable {
     private int id;
     private String title;
-//    private String description;
-//    private String imageUrl;
+    private String employee_name;
+    private String description;
+    private String imageUrl;
 
-    public Item(int id,String name
+    public Item(int id
+//            ,String name
+            , String employee_name
 //            , String description, String imageUrl
     ) {
         this.id = id;
-        this.title = name;
+        this.employee_name = employee_name;
+//        this.title = name;
 //        this.description = description;
 //        this.imageUrl = imageUrl;
     }
@@ -35,5 +39,13 @@ public class Item implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getEmployee_name() {
+        return employee_name;
+    }
+
+    public void setEmployee_name(String employee_name) {
+        this.employee_name = employee_name;
     }
 }

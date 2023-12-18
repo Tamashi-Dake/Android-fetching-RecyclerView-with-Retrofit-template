@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.myapplication.model.Item;
+
 public class DeltailActivity extends AppCompatActivity {
     private Item item;
 
@@ -23,7 +25,8 @@ public class DeltailActivity extends AppCompatActivity {
         item = (Item) bundle.getSerializable("item");
 
         TextView tvName = findViewById(R.id.tvName);
-        tvName.setText(item.getName());
+//        tvName.setText(item.getName());
+        tvName.setText(item.getEmployee_name());
 
         ImageButton btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {

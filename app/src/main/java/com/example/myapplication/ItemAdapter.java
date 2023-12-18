@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.model.Item;
+
 import java.util.List;
 
 
@@ -38,7 +40,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     if (item == null) {
         return;
     }
-    holder.tvName.setText(String.valueOf(item.getName()));
+//    holder.tvName.setText(String.valueOf(item.getName()));\
+    holder.tvName.setText(String.valueOf(item.getEmployee_name()));
     holder.itemLayout.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
