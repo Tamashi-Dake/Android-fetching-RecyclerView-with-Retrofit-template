@@ -46,11 +46,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
     holder.tvId.setText(String.valueOf(item.getId()));
     holder.tvName.setText(String.valueOf(item.getTitle()));
-    holder.tvBody.setText(String.valueOf(item.getBody()));
+    holder.tvCompleted.setText(String.valueOf(item.getCompleted()));
     holder.itemLayout.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "User id: " + item.getUserId(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "User id of Todo: " + item.getUserId(), Toast.LENGTH_LONG).show();
         }
     });
         holder.itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
@@ -64,8 +64,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private void showDeleteConfirmationDialog(final Item item, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Xóa bài viết");
-        builder.setMessage("Có thực sự muốn xóa bài viết này không?");
+        builder.setTitle("Xóa todo");
+        builder.setMessage("Có thực sự muốn xóa todo này không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -94,13 +94,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView tvId;
         private TextView tvName;
-        private TextView tvBody;
+        private TextView tvCompleted;
         private ConstraintLayout itemLayout;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvId = itemView.findViewById(R.id.tvId);
             tvName = itemView.findViewById(R.id.tvName);
-            tvBody = itemView.findViewById(R.id.tvBody);
+            tvCompleted = itemView.findViewById(R.id.tvCompleted);
             itemLayout = itemView.findViewById(R.id.wrapper);
         }
     }

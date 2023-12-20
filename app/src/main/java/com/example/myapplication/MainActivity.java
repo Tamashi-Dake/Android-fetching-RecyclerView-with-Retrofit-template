@@ -32,14 +32,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         IntentFilter intentFilter = new IntentFilter("android.intent.action.AIRPLANE_MODE");
-
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-               Toast.makeText(context, "Airplane mode ON/OFF", Toast.LENGTH_SHORT).show();
+               Toast.makeText(context, "Airplane mode vừa Bật/Tắt", Toast.LENGTH_LONG).show();
             }
         };
-
         this.registerReceiver(receiver, intentFilter);
 
         rcvItem = findViewById(R.id.rcv);
@@ -48,22 +46,21 @@ public class MainActivity extends AppCompatActivity {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
         rcvItem.addItemDecoration(dividerItemDecoration);
-        if(isNetworkStatusAvialable (getApplicationContext())) {
-            getItemListFromAPI();
+        if(coKetNoi(getApplicationContext())) {
+            layTodoTuApi();
         } else {
-            Toast.makeText(this, "Không có kết nối mạng, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không có kết nối mạng, vui lòng thử lại", Toast.LENGTH_LONG).show();
         }
     }
-    public static boolean isNetworkStatusAvialable (Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+    public static boolean coKetNoi(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
     }
-    private void getItemListFromAPI() {
+    private void layTodoTuApi() {
         ApiService.apiService.getListItems()
                 .enqueue(new Callback<List<Item>>() {
                     @Override
@@ -74,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         List<Item> itemList =new ArrayList<>();
                         for (Item item : items) {
-                            itemList.add(new Item(item.getUserId(), item.getId(),item.getTitle(),item.getBody()));
+                            itemList.add(new Item(item.getUserId(), item.getId(),item.getTitle(),item.getCompleted()));
                         }
                         ItemAdapter itemAdapter = new ItemAdapter(MainActivity.this, itemList);
                         rcvItem.setAdapter(itemAdapter);

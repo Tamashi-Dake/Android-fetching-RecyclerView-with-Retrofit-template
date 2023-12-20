@@ -20,7 +20,7 @@ public interface ApiService {
             .build()
             .create(ApiService.class);
 
-    @GET("posts")
+    @GET("todos")
     Call<List<Item>> getListItems(
     );
 }
