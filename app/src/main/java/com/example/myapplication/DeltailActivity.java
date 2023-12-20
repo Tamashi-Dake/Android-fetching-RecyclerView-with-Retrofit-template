@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.model.Item;
 
 public class DeltailActivity extends AppCompatActivity {
@@ -24,9 +26,12 @@ public class DeltailActivity extends AppCompatActivity {
         }
         item = (Item) bundle.getSerializable("item");
 
+        ImageView img = findViewById(R.id.imgDetail);
         TextView tvName = findViewById(R.id.tvName);
-//        tvName.setText(item.getName());
+
+
         tvName.setText(item.getEmployee_name());
+        Glide.with(this).load(item.getProfile_image()).placeholder(R.drawable.ic_launcher_background).centerCrop().into(img);
 
         ImageButton btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {

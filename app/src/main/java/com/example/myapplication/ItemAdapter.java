@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.model.Item;
 
 import java.util.List;
@@ -40,6 +42,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     if (item == null) {
         return;
     }
+        Glide.with(holder.itemView.getContext()).load(item.getProfile_image()).placeholder(R.drawable.ic_launcher_foreground).centerCrop().into(holder.img);
 //    holder.tvName.setText(String.valueOf(item.getName()));\
     holder.tvName.setText(String.valueOf(item.getEmployee_name()));
     holder.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -68,13 +71,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
+        private ImageView img;
         private TextView tvName;
         private ConstraintLayout itemLayout;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             itemLayout = itemView.findViewById(R.id.wrapper);
-
+            img = itemView.findViewById(R.id.img);
         }
     }
 }

@@ -79,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < items.size(); i++) {
                                 itemList.add(new Item(
                                         items.get(i).getId(),
-                                        items.get(i).getEmployee_name()
+                                        items.get(i).getEmployee_name(),
+                                        items.get(i).getProfile_image()
                                 ));
                             }
                             ItemAdapter itemAdapter = new ItemAdapter(MainActivity.this, itemList);

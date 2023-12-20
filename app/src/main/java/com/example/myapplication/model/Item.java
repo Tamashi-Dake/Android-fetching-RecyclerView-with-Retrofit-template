@@ -7,18 +7,19 @@ public class Item implements Serializable {
     private String title;
     private String employee_name;
     private String description;
-    private String imageUrl;
+    private String profile_image;
 
-    public Item(int id
-//            ,String name
-            , String employee_name
-//            , String description, String imageUrl
+    public Item(int id,
+//            String name
+             String employee_name,
+//            , String description
+             String profile_image
     ) {
         this.id = id;
         this.employee_name = employee_name;
 //        this.title = name;
 //        this.description = description;
-//        this.imageUrl = imageUrl;
+        this.profile_image = profile_image;
     }
     public String getName() {
         return title;
@@ -47,5 +48,13 @@ public class Item implements Serializable {
 
     public void setEmployee_name(String employee_name) {
         this.employee_name = employee_name;
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 }
