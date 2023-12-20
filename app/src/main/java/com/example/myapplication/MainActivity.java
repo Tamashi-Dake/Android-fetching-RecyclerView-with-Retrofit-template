@@ -5,11 +5,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.Toast;
-
-import com.example.myapplication.model.DataJson;
-import com.example.myapplication.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,67 +31,57 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        IntentFilter intentFilter = new IntentFilter("android.intent.action.AIRPLANE_MODE");
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+               Toast.makeText(context, "Airplane mode ON/OFF", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        this.registerReceiver(receiver, intentFilter);
+
         rcvItem = findViewById(R.id.rcv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rcvItem.setLayoutManager(linearLayoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
         rcvItem.addItemDecoration(dividerItemDecoration);
-
-
-        getItemListFromAPI();
+        if(isNetworkStatusAvialable (getApplicationContext())) {
+            getItemListFromAPI();
+        } else {
+            Toast.makeText(this, "Không có kết nối mạng, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+        }
     }
+    public static boolean isNetworkStatusAvialable (Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-//    private void getItemListFromAPI() {
-//        ApiService.apiService.getListItems(
-////                1
-//                )
-//                .enqueue(new Callback<List<Item>>() {
-//                    @Override
-//                    public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-//                        items = response.body();
-//                        if (items == null) {
-//                            return;
-//                        }
-//                        List<Item> itemList =new ArrayList<>();
-//                        for (Item item : items) {
-//                            itemList.add(new Item(item.getId(),item.getName()));
-//                        }
-//                        ItemAdapter itemAdapter = new ItemAdapter(MainActivity.this, itemList);
-//                        rcvItem.setAdapter(itemAdapter);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<Item>> call, Throwable t) {
-//                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+    }
     private void getItemListFromAPI() {
         ApiService.apiService.getListItems()
-                .enqueue(new Callback<DataJson<Item>>() {
+                .enqueue(new Callback<List<Item>>() {
                     @Override
-                    public void onResponse(Call<DataJson<Item>> call, Response<DataJson<Item>> response) {
-                        DataJson<Item> dataJson = response.body();
-                        if (dataJson == null) {
+                    public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                        items = response.body();
+                        if (items == null) {
                             return;
                         }
-                        if (Objects.equals(dataJson.isStatus(), "success")) {
-                            List<Item> items = dataJson.getData();
-                            List<Item> itemList =new ArrayList<>();
-                            for (int i = 0; i < items.size(); i++) {
-                                itemList.add(new Item(
-                                        items.get(i).getId(),
-                                        items.get(i).getEmployee_name(),
-                                        items.get(i).getProfile_image()
-                                ));
-                            }
-                            ItemAdapter itemAdapter = new ItemAdapter(MainActivity.this, itemList);
-                            rcvItem.setAdapter(itemAdapter);
+                        List<Item> itemList =new ArrayList<>();
+                        for (Item item : items) {
+                            itemList.add(new Item(item.getUserId(), item.getId(),item.getTitle(),item.getBody()));
                         }
+                        ItemAdapter itemAdapter = new ItemAdapter(MainActivity.this, itemList);
+                        rcvItem.setAdapter(itemAdapter);
                     }
+
                     @Override
-                    public void onFailure(Call<DataJson<Item>> call, Throwable t) {
+                    public void onFailure(Call<List<Item>> call, Throwable t) {
                         Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
